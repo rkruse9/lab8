@@ -125,8 +125,10 @@ module MakeStack (Element: SERIALIZE) : (STACK with type element = Element.t) =
     let fold_left (f : 'a -> element -> 'a) (init : 'a) (s : stack) : 'a =
       List.fold_left f init s
 
-    let serialize (s : stack) : string =
-      fold_left (fun acc elt -> acc^(Element.serialize elt)) "" (List.rev s)
+    let serialize (s : stack) : string =      
+      let string_join x y = Element.serialize y                  
+        ^ (if x <> "" then ":" ^ x else "") in      
+          fold_left string_join "" s
   end ;;
 
 (*......................................................................
